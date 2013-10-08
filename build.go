@@ -32,9 +32,7 @@ func main() {
 
    err = os.RemoveAll(deployDir)
    panicOnError(err)
-   err = exec.Command("cp", "-r", buildDir, deployDir).Run()
-   panicOnError(err)
-   err = os.Chmod(deployDir, 0755)
+   err = exec.Command("mv", buildDir, deployDir).Run()
    panicOnError(err)
 }
 
