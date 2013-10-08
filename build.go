@@ -11,11 +11,11 @@ import (
    "math/rand"
    "path/filepath"
    "encoding/json"
-   "github.com/GlenKelley/buildtools/git"
+   "github.com/GlenKelley/dev/git"
 )
 
 func main() {
-   env := flags()
+   flags()
    
    groot, err := git.GitRoot()
    panicOnError(err)
@@ -40,7 +40,7 @@ func flags() string {
    envPtr := flag.String("env", "local", "environment")
    flag.Parse()
    fmt.Printf("building for environment [%s]\n", *envPtr)
-   return *env
+   return *envPtr
 }
 
 func mkdirRandom() (string, error) {
