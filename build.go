@@ -15,31 +15,34 @@ import (
 )
 
 func main() {
-    env := flag.String("env", "local", "environment")
-    flag.Parse()
-    fmt.Printf("building for environment [%s]\n", *env)
-    
-    groot, err := git.GitRoot()
-    panicOnError(err)
-    srcDir := path.Join(groot, ".")
+   env := flags()
+   
+   groot, err := git.GitRoot()
+   panicOnError(err)
 
-    buildDir, err := mkdirRandom()
-    panicOnError(err)
-    defer os.RemoveAll(buildDir)
+   buildDir, err := mkdirRandom()
+   panicOnError(err)
+   defer os.RemoveAll(buildDir)
 
-    deployDir := path.Join(os.Getenv("HOME"), "Sites")
-    
-    c, err := walkDir(srcDir, buildDir)
-    panicOnError(err)
-    err = <- c
-    panicOnError(err)
-    
-    err = os.RemoveAll(deployDir)
-    panicOnError(err)
-    err = exec.Command("cp", "-r", buildDir, deployDir).Run()
-    panicOnError(err)
-    err = os.Chmod(deployDir, 0755)
-    panicOnError(err)
+   deployDir := path.Join(os.Getenv("HOME"), "Sites")
+   c, err := walkDir(groot, buildDir)
+   panicOnError(err)
+   err = <- c
+   panicOnError(err)
+
+   err = os.RemoveAll(deployDir)
+   panicOnError(err)
+   err = exec.Command("cp", "-r", buildDir, deployDir).Run()
+   panicOnError(err)
+   err = os.Chmod(deployDir, 0755)
+   panicOnError(err)
+}
+
+func flags() string {
+   envPtr := flag.String("env", "local", "environment")
+   flag.Parse()
+   fmt.Printf("building for environment [%s]\n", *envPtr)
+   return *env
 }
 
 func mkdirRandom() (string, error) {
