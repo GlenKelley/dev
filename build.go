@@ -154,9 +154,6 @@ func ignore(srcDir string, buildDir string, path string, info os.FileInfo) error
 }
 
 func compileLess(srcDir string, buildDir string, path string, info os.FileInfo) error {
-    srcDir = filepath.Join(srcDir, "less")
-    buildDir = filepath.Join(buildDir, "css")
-    
     base := filepath.Base(path)
     isChild, err := filepath.Match("_*", base)
     if err != nil { return err }
@@ -206,9 +203,6 @@ func writeJson(content map[string]interface{}, buildDir string, path string) err
 }
 
 func compileCoffeeScript(srcDir string, buildDir string, path string, info os.FileInfo) error {
-    srcDir = filepath.Join(srcDir, "coffee")
-    buildDir = filepath.Join(buildDir, "js")
-    
     dest, err := replacePathAndExtention(srcDir, buildDir, path, ".js")
     if err != nil { return err }
     

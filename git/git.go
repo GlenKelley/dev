@@ -1,11 +1,13 @@
 package git
 
-import "os/exec"
-import "strings"
+import (
+   "os/exec"
+   "strings"
+)
 
 func GitRoot() (string, error) {
     bytes, err := exec.Command("git", "rev-parse", "--show-toplevel").Output()
-    if err != nil {
+    if err == nil {
         groot := strings.TrimSpace(string(bytes))
         return groot, nil
     } 
